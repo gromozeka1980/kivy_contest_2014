@@ -21,8 +21,9 @@ from rules import rules
 ANDROID=True
 try: import android
 except: ANDROID=False
-
 import itertools
+import os
+CATALOG_ROOT = os.path.dirname(__file__)
 
           
 
@@ -73,11 +74,13 @@ class CaterpillarsApp(App):
         
 
     def load_progress(self):
-        try: return map(int,open("progress.txt").read().split())
-        except: return []
+        try:
+            return map(int,open(os.path.join(CATALOG_ROOT,"progress.txt")).read().split())
+        except:
+            return []
 
     def save_progress(self):
-        open("progress.txt","w").write(' '.join(map(str,self.progress)))
+        open(os.path.join(CATALOG_ROOT,"progress.txt"),"w").write(' '.join(map(str,self.progress)))
            
 
 if __name__ == '__main__':
