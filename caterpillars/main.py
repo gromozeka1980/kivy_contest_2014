@@ -15,8 +15,8 @@ from kivy.uix.label import Label
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from level_chooser import LevelChooser
-from exam import Exam
-from utils import *
+from level import Level
+from help import Help
 from rules import rules
 ANDROID=True
 try: import android
@@ -24,21 +24,7 @@ except: ANDROID=False
 
 import itertools
 
-description = u"""Most of the logic games are actually games of deductive logic. This one is of very small family of games that use inductive logic (most known games from this family are Eleusis and Zendo).
-At each level of this game you are to guess the rule, that describes a subset of sequences of multicolor segments (caterpillars). At the beginning of the game you get 14 caterpillars, 7 of them correspond to the rule and 7 don't. Besides you can create a custom caterpillar and check wether it corresponds to the rule. At the moment you feel that you've catched the pattern, you can take a test to check your guess.
-Any suggestions, that may improve gameplay or design, and of course new interesting rules are welcome."""
-
-
-class WTF(Screen):
-
-    def __init__(self,**kwargs):
-        super(WTF, self).__init__(**kwargs)
-        self.name="wtf"
-        wtf_text = Label(text=description)
-        self.add_widget(wtf_text)
-        
-
-            
+          
 
 class CaterpillarsApp(App):            
 
@@ -49,7 +35,7 @@ class CaterpillarsApp(App):
         self.grid_screen.bind(on_wtf=self.wtf)
         self.grid_screen.color_progress(self.progress) 
         self.level_screen=Level()
-        self.wtf_screen=WTF()
+        self.wtf_screen=Help()
         self.level_screen.bind(on_pass=self.success)
         self.root=ScreenManager()
         self.root.add_widget(self.grid_screen)

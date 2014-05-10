@@ -1,4 +1,7 @@
-Most of the logic games are actually games of deductive logic.
+from kivy.uix.screenmanager import Screen
+from kivy.uix.rst import RstDocument
+
+help_text="""Most of the logic games are actually games of deductive logic.
 This one is of very small family of games that uses inductive logic (most
 known games from this family are Eleusis and Zendo).
 At each level of this game you are to guess the rule,
@@ -10,3 +13,12 @@ At the moment you feel that you've catched the pattern, you can take a test to c
 
 Any suggestions, that may improve gameplay or design,
 and of course new interesting rules are welcome.
+"""
+
+class Help(Screen):
+
+    def __init__(self,**kwargs):
+        super(Help, self).__init__(**kwargs)
+        self.name="wtf"
+        wtf_text = RstDocument(text=help_text)
+        self.add_widget(wtf_text)

@@ -5,6 +5,7 @@ from input_caterpillar import InputCaterpillar
 from caterpillar_list import CaterpillarList
 from exam import Exam
 from utils import get_valid_invalid, get_n
+from kivy.uix.screenmanager import Screen
 
 
 class Level(Screen):
