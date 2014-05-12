@@ -10,7 +10,7 @@ class Turtle(object):
         self.pen_down = True
         self.cur_pos = (0,0)
         self.cur_angle = 0        
-        self.cur_color = (0,0,0)
+        self.cur_color = (255,255,255)
     
     def pu(self): self.pen_down = False
 

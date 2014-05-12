@@ -1,6 +1,8 @@
 from l_open import load_color_map
+import os
 
-default_palette=load_color_map(open("./maps/default.map"))
+CATALOG_ROOT = os.path.join(os.path.dirname(__file__),"maps")
+default_palette=load_color_map(open(os.path.join(CATALOG_ROOT,"default.map")))
 
 def tokenize(iterable):
     special = 'iq0123456789.'

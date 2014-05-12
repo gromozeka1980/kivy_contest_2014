@@ -1,12 +1,14 @@
 import Image,ImageDraw
 
-
-def lines2image(lines,res):
+def lines2image(lines,res,background_color=(128,128,128),width=1):
     """
     input - list of lines and resolution, output - PIL image after
     appropriate scaling and centering
     line is a tuple - ((x,y),(x1,y1),color)
     """
+    offset = 3 #3 pixel border
+    res_orig=res
+    res=res[0]-offset*2,res[1]-offset*2    
     lines = list(lines)
     window_aspect_ratio = float(res[0])/res[1]
     min_x,max_x,min_y,max_y = 0,0,0,0
@@ -24,12 +26,12 @@ def lines2image(lines,res):
     else:
         coeff = float(res[1])/(height+0.1)
         x_offset=(res[0]-width*coeff)/2.0
-    x_change = lambda x: (x-min_x)*coeff+x_offset
-    y_change = lambda y: res[1]-((y-min_y)*coeff+y_offset)
-    im = Image.new("RGB",res,(255,255,255))
+    x_change = lambda x: ((x-min_x)*coeff+x_offset)+offset
+    y_change = lambda y: (res[1]-((y-min_y)*coeff+y_offset))+offset
+    im = Image.new("RGB",res_orig,background_color)
     draw = ImageDraw.Draw(im)
     for ((x,y),(x1,y1),color) in lines:
         x,x1 = x_change(x),x_change(x1)
         y,y1 = y_change(y),y_change(y1)
-        draw.line((x,y,x1,y1),fill=color)
+        draw.line((x,y,x1,y1),fill=color,width=2)
     return im
