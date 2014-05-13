@@ -9,7 +9,8 @@ from kivy.uix.dropdown import DropDown
 from kivy.uix.screenmanager import Screen,ScreenManager
 from editor import LSystemsEdit
 from kivy.uix.popup import Popup
-from file_chooser import LFileChooser
+from kivy.uix.colorpicker import ColorPicker
+from file_chooser import LFileChooser,BackgroundColorPicker
 ANDROID=True
 try: import android
 except: ANDROID=False
@@ -37,6 +38,8 @@ class LSystemsView(Screen):
         self.ls_name = Label(text = "")
         self.plus_button = Button(text="+")
         self.minus_button = Button(text="-")
+        self.background_button = Button(text="Choose background")
+        self.background_button.bind(on_press=self.choose_background_color)
         self.plus_button.bind(on_press=self.plus)
         self.minus_button.bind(on_press=self.minus)
         self.next_button.bind(on_press=self.next)        
@@ -51,6 +54,7 @@ class LSystemsView(Screen):
         self.buttons_layout.add_widget(self.minus_button)
         self.buttons_layout.add_widget(self.segments)
         self.buttons_layout.add_widget(self.edit_button)
+        self.buttons_layout.add_widget(self.background_button)
         self.main_layout.add_widget(self.image)
         self.main_layout.add_widget(self.buttons_layout)
 
@@ -60,10 +64,34 @@ class LSystemsView(Screen):
                       size_hint=(None, None), size=(500, 500))
 
 
+        
+        self.color_picker=BackgroundColorPicker()
+        self.color_picker.bind(on_choose=self.change_background_color)
+        self.color_picker_popup = Popup(title = "Pick color",
+                                        content = self.color_picker,
+                                        size_hint = (None,None),
+                                        size = (500,500))
+        
+        
+
         self.add_widget(self.main_layout)
 
 
-    def on_edit(*args,**kwargs):
+
+
+    def choose_background_color(self,*args,**kwargs):
+        self.color_picker_popup.open()
+
+    def change_background_color(self,instance,color):
+        print "GGGG"
+        r,g,b,a = color
+        r=int(255*r)
+        g=int(255*g)
+        b=int(255*b)
+        self.image.set_background_color((r,g,b))
+        self.color_picker_popup.dismiss()
+
+    def on_edit(self,*args,**kwargs):
         pass
 
     def on_file_choose(self,*args):

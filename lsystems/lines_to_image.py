@@ -30,6 +30,8 @@ def lines2image(lines,res,background_color=(128,128,128),width=1):
     y_change = lambda y: (res[1]-((y-min_y)*coeff+y_offset))+offset
     im = Image.new("RGB",res_orig,background_color)
     draw = ImageDraw.Draw(im)
+    if not(lines):
+        draw.text((res[0]/2,res[1]/2),"NO VISUAL REPRESENTATION")
     for ((x,y),(x1,y1),color) in lines:
         x,x1 = x_change(x),x_change(x1)
         y,y1 = y_change(y),y_change(y1)
