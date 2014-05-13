@@ -1,34 +1,40 @@
 def parse_line(line):
-    line = line.split(";")[0]
-    line = line.lower().strip()
+    raw_line = line
+    rv = None    
+    line = line.split(";")[0] #ignore comments
+    line = line.strip()
+    if not line.endswith("{"): 
+        line = line.lower() #only names are case-sensitive
     if line.startswith("angle"):
-        return ("angle",line.replace("="," ").split()[1])
+        rv = ("angle",line.replace("="," ").split()[1])
     elif line.startswith("axiom"):
-        print line
-        try: return ("axiom",line.replace("="," ").split()[1])
+        try: rv = ("axiom",line.replace("="," ").split()[1])
         except: pass
     elif line.endswith("{"):
-        return ("name",line[:-1].strip())
+        rv = ("name",line[:-1].strip())
     elif line.endswith("}"):
-        return ("end",)
+        rv = ("end",)
     elif len(line)>1 and line[1]=="=":
-        return ("rule",line.split("="))
+        rv = ("rule",line.split("="))
+    return rv,raw_line
 
 
 def l_parser(lines):
     d={}
     angle,axiom,rules,name = None,None,{},None
+    raw_text=""
     for l in lines:
-        p = parse_line(l)
-        print p
+        p,r = parse_line(l)
+        raw_text+=r
         if not p: continue
         if p[0]=="name":
+            raw_text = r
             angle,axiom,rules = None,None,{}
             name = p[1]
         if p[0] == "end":
             print angle,axiom,rules
             if angle and axiom and rules and name:
-                d[name]=(axiom,rules,angle)
+                d[name]=(axiom,rules,angle),raw_text
         if p[0] == "angle":
             angle = 360.0/float(p[1])
         if p[0] == "axiom":

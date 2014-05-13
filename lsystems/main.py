@@ -4,14 +4,18 @@ from math import *
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from itertools import cycle
 from l_open import l_parser
 from kivy.uix.dropdown import DropDown
-import os
 from kivy.uix.screenmanager import Screen,ScreenManager
 from editor import LSystemsEdit
-
-CATALOG_ROOT = os.path.join(os.path.dirname(__file__),"l")
+from kivy.uix.popup import Popup
+from file_chooser import LFileChooser
+ANDROID=True
+try: import android
+except: ANDROID=False
+from pathes import *
+from kivy.config import Config
+Config.set('kivy', 'exit_on_escape',1)
 
 class LSystemsView(Screen):
 
@@ -23,13 +27,11 @@ class LSystemsView(Screen):
         self.buttons_layout = BoxLayout(orientation='horizontal',size_hint= (1, .1))
         self.image = LSystemImage()
         self.image.bind(on_update=self.image_update)
-        self.file_choice = DropDown()
         self.fractal_choice = DropDown()
         self.fractal_choice.bind(on_select=self.choose_fractal)
-        self.file_choice.bind(on_select=self.choose_file)
         self.file_choice_button=Button(text = "Choose file")        
         self.choice_button=Button(text = "Choose L-System")
-        self.file_choice_button.bind(on_release = self.file_choice.open)
+        self.file_choice_button.bind(on_release = self.on_file_choose) #self.file_choice.open)
         self.choice_button.bind(on_release = self.fractal_choice.open)
         self.next_button = Button(text="Next")
         self.ls_name = Label(text = "")
@@ -52,21 +54,26 @@ class LSystemsView(Screen):
         self.main_layout.add_widget(self.image)
         self.main_layout.add_widget(self.buttons_layout)
 
-        self.file_list = os.listdir(CATALOG_ROOT)
-        self.set_files()
-        self.choose_file(None,self.file_list[0])
-        self.iter = cycle(self.fractals.keys())
+        self.file_chooser = LFileChooser()
+        self.file_chooser.bind(on_choose=self.choose_file)
+        self.popup = Popup(title='Load L-Systems', content=self.file_chooser,
+                      size_hint=(None, None), size=(500, 500))
 
 
         self.add_widget(self.main_layout)
 
+
     def on_edit(*args,**kwargs):
         pass
+
+    def on_file_choose(self,*args):
+        self.popup.open()
+
 
 
     def edit(self,instance,*args):
         name=self.ls_name.text
-        self.dispatch("on_edit",(name,self.fractals[name]))
+        self.dispatch("on_edit",(name,self.fractals[name][0]))
 
 
     def set_fractals(self):
@@ -75,22 +82,18 @@ class LSystemsView(Screen):
             btn = Button(text = k,size_hint_y=None, height=44)
             btn.bind(on_release = lambda btn: self.fractal_choice.select(btn.text))
             self.fractal_choice.add_widget(btn)
-
-    def set_files(self):
-        for k in sorted(self.file_list):
-            btn = Button(text = k,size_hint_y=None, height=44)
-            btn.bind(on_release = lambda btn: self.file_choice.select(btn.text))
-            self.file_choice.add_widget(btn)
-        
+       
     def choose_file(self,instance,text):
+        self.popup.dismiss()
         print "CHOOSE FILE",text
-        self.fractals=l_parser(open(os.path.join(CATALOG_ROOT,text)))
+        self.fractals=l_parser(open(l_file_path(text)))
         self.set_fractals()
         self.choose_fractal(None,sorted(self.fractals.keys())[0])
 
     def choose_fractal(self,instance,text):
         self.ls_name.text = text
-        self.image.set_lsystem(self.fractals[text])
+        self.image.set_lsystem(self.fractals[text][0])
+        print self.fractals[text][1]
         self.image.set_iterations(1)
 
     def image_update(self,instance,num):
@@ -123,13 +126,24 @@ class LSystemsApp(App):
         self.view.bind(on_edit=self.run_editor)
         self.root.add_widget(self.view)
         self.root.add_widget(self.edit)
-        #self.bind(on_start = self.post_build_init)
+        self.bind(on_start = self.post_build_init)
         return self.root
+
+    def post_build_init(self,ev): 
+        if ANDROID: android.map_key(android.KEYCODE_BACK, 1001) 
+        win = self._app_window 
+        win.bind(on_keyboard=self.key_handler) 
 
 
     def run_editor(self,instance,fractal):
+        self.view.image.set_iterations(1) # no rendering on background
         self.root.current="edit"
         self.edit.load_lsystem(fractal)
+
+    def key_handler(self,keyboard,keycode, *args, **kwargs):
+        if keycode==(1001 if ANDROID else 32):
+            self.edit.image.set_iterations(1)
+            self.root.current="view"
 
 
            

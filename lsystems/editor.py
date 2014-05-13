@@ -5,9 +5,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.label import Label
-from itertools import cycle
-from l_open import l_parser
-from kivy.uix.dropdown import DropDown
 from kivy.uix.textinput import TextInput
 import os
 from kivy.metrics import sp

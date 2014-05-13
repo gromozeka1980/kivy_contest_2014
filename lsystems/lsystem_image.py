@@ -3,6 +3,7 @@ from lines_to_image import lines2image
 from kivy.uix.image import Image as Im
 from kivy.clock import Clock
 import os
+from pathes import *
 
 CATALOG_ROOT = os.path.join(os.path.dirname(__file__),"Temp")
 
@@ -49,7 +50,7 @@ class LSystemImage(Im):
         self.dispatch('on_update',len(self.all_lines))
 
     def reload_image(self,instance,*args):
-        file_name = os.path.join(CATALOG_ROOT,"%s.png"%id(self))
+        file_name = temp_file_path("%s.png"%id(self))
         im = lines2image(self.all_lines,map(int,self.size))
         im.save(file_name)
         self.source = file_name
