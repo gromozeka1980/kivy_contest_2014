@@ -15,7 +15,8 @@ class LSystemImage(Im):
         self.bind(pos=self.reload_image)
         self.bind(size=self.reload_image)
         self.iterations = 1
-        self.background_color = (128,128,128)
+        self.background_color = (0,0,0)
+        self.line_width = 1
         self.all_lines = []
         self.ls=LSystem()        
         Clock.schedule_interval(self.update,1/10.0)
@@ -25,7 +26,7 @@ class LSystemImage(Im):
 
     def set_lsystem(self,lsystem):
         self.ls.set_lsystem(lsystem)
-        self.reset()
+        self.reset()        
         #self.set_iterations(1)
 
     def set_iterations(self,iterations):
@@ -38,11 +39,17 @@ class LSystemImage(Im):
     def set_background_color(self,color):
         self.background_color = color
         self.reload_image(None)
+
+
+    def set_width(self,width):
+        self.line_width = width
+        self.reload_image(None)
         
     def reset(self):
         self.ls.reset()
         self.chunks = self.ls.draw(self.iterations,1000)
         self.all_lines = []
+        self.reload_image(None)
 
     def update(self,*args,**kwargs):
         try:
@@ -58,6 +65,7 @@ class LSystemImage(Im):
         file_name = temp_file_path("%s.png"%id(self))
         im = lines2image(self.all_lines,
                          map(int,self.size),
+                         line_width =self.line_width,
                          background_color=self.background_color)
         im.save(file_name)
         self.source = file_name

@@ -22,7 +22,8 @@ def interpret(turtle,s,angle,segment_length=5,palette=None):
     if not palette:
         palette = default_palette
     queue=[]
-    cur_color = 0
+    cur_color = 15
+    turtle.cur_color = palette[cur_color]
     for l in tokenize(s):
         l=l.lower()
         if l=='f' or l=="d":

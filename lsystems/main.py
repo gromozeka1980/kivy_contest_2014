@@ -6,21 +6,24 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from l_open import l_parser
 from kivy.uix.dropdown import DropDown
+from kivy.metrics import sp
 from kivy.uix.screenmanager import Screen,ScreenManager
 from editor import LSystemsEdit
 from kivy.uix.popup import Popup
 from kivy.uix.colorpicker import ColorPicker
-from file_chooser import LFileChooser,BackgroundColorPicker
+from kivy.uix.togglebutton import ToggleButton
+from popups import LFileChooser,BackgroundColorPicker
 ANDROID=True
 try: import android
 except: ANDROID=False
 from pathes import *
 from kivy.config import Config
-Config.set('kivy', 'exit_on_escape',1)
+
 
 class LSystemsView(Screen):
 
     def __init__(self,**kwargs): 
+        #TODO KV!!!!!!
         self.register_event_type('on_edit')
         super(LSystemsView, self).__init__(**kwargs)
         self.name = "view"
@@ -28,6 +31,18 @@ class LSystemsView(Screen):
         self.buttons_layout = BoxLayout(orientation='horizontal',size_hint= (1, .1))
         self.image = LSystemImage()
         self.image.bind(on_update=self.image_update)
+
+        self.width_choice=DropDown()
+        self.width_choice.bind(on_select=self.choose_width)
+        self.width_choice_button=Button(text="Line width")
+        self.width_choice_button.bind(on_release = self.width_choice.open)
+
+        for i in range(1,10):
+            btn = ToggleButton(text=str(i), group='width_values',size_hint_y=None,height=sp(30))
+            if i == 1: btn.state = 'down'
+            btn.bind(on_press = lambda btn: self.width_choice.select(btn.text))
+            self.width_choice.add_widget(btn)
+
         self.fractal_choice = DropDown()
         self.fractal_choice.bind(on_select=self.choose_fractal)
         self.file_choice_button=Button(text = "Choose file")        
@@ -55,6 +70,7 @@ class LSystemsView(Screen):
         self.buttons_layout.add_widget(self.segments)
         self.buttons_layout.add_widget(self.edit_button)
         self.buttons_layout.add_widget(self.background_button)
+        self.buttons_layout.add_widget(self.width_choice_button)
         self.main_layout.add_widget(self.image)
         self.main_layout.add_widget(self.buttons_layout)
 
@@ -83,7 +99,6 @@ class LSystemsView(Screen):
         self.color_picker_popup.open()
 
     def change_background_color(self,instance,color):
-        print "GGGG"
         r,g,b,a = color
         r=int(255*r)
         g=int(255*g)
@@ -97,11 +112,11 @@ class LSystemsView(Screen):
     def on_file_choose(self,*args):
         self.popup.open()
 
-
-
-    def edit(self,instance,*args):
+    def edit(self,instance,*args):        
         name=self.ls_name.text
-        self.dispatch("on_edit",(name,self.fractals[name][0]))
+        if name: fractal = self.fractals[name][0]
+        else: fractal = '',{},0
+        self.dispatch("on_edit",(name,fractal))
 
 
     def set_fractals(self):
@@ -113,10 +128,13 @@ class LSystemsView(Screen):
        
     def choose_file(self,instance,text):
         self.popup.dismiss()
-        print "CHOOSE FILE",text
         self.fractals=l_parser(open(l_file_path(text)))
         self.set_fractals()
         self.choose_fractal(None,sorted(self.fractals.keys())[0])
+
+    def choose_width(self,instance,text):
+        self.image.set_width(int(text))
+
 
     def choose_fractal(self,instance,text):
         self.ls_name.text = text

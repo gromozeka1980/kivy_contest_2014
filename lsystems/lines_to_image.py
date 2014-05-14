@@ -1,6 +1,6 @@
 import Image,ImageDraw
 
-def lines2image(lines,res,background_color=(128,128,128),width=1):
+def lines2image(lines,res,background_color=(0,0,0),line_width=2):
     """
     input - list of lines and resolution, output - PIL image after
     appropriate scaling and centering
@@ -35,5 +35,5 @@ def lines2image(lines,res,background_color=(128,128,128),width=1):
     for ((x,y),(x1,y1),color) in lines:
         x,x1 = x_change(x),x_change(x1)
         y,y1 = y_change(y),y_change(y1)
-        draw.line((x,y,x1,y1),fill=color,width=2)
+        draw.line((x,y,x1,y1),fill=color,width=line_width)
     return im

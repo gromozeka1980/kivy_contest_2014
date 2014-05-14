@@ -10,6 +10,36 @@ import os
 from kivy.metrics import sp
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
+from scrollable_label import ScrollableLabel
+
+syntax="""
+                    L-Systems language syntax
+
+ $|%         : turn 180 degrees or the largest possible turn < 180 degrees
+
+ $f% or $d%    : draw a line using the current direction/length
+ $g% or $m%    : move forward instead of drawing
+
+ $+%         : turn left
+ $-%         : turn right
+ $\%{ANGLE}  : turn left {ANGLE} degrees
+ $/%{ANGLE}  : turn right {ANGLE} degrees
+
+ $[%         : save state (position, angle, size, etc.)
+ $]%         : restore state
+ $!%         : reverse the meaning of '+' and '-' and '\' and '/'
+
+ $@%{SCALE}  : multiply the current line length by {SCALE}
+ $@q%{SCALE} : multiply the line length by the square root of {SCALE}
+ $@I%{SCALE} : multiply the line length by the reciprocal of {SCALE}
+
+ $c%{INDEX}  : set color map index to {INDEX}
+
+ $<%{COUNT}  : increment color map index by {COUNT}
+ $>%{COUNT}  : decrement color map index by {COUNT}
+
+ {LETTER}$=%{COMMANDS} : associate {COMMANDS} with character {LETTER}
+""".replace("$","[color=#ff0000][b]").replace("%","[/b][/color]")
 
 
 CATALOG_ROOT = os.path.join(os.path.dirname(__file__),"l")
@@ -21,7 +51,7 @@ class LSystemsEdit(Screen):
         self.name="edit"
         self.main_layout=BoxLayout(orientation='horizontal')
 
-        self.edit_layout=BoxLayout(orientation='vertical',size_hint_x=.3)
+        self.edit_layout=BoxLayout(orientation='vertical',size_hint_x=.4)
         #Text boxes
         self.name_input = TextInput(multiline=False,size_hint_y=None,height=sp(30))
         self.name_input.bind(text=self.on_text)
@@ -57,7 +87,14 @@ class LSystemsEdit(Screen):
         self.edit_layout.add_widget(self.rule_chooser)
         self.edit_layout.add_widget((Label(text="Change number of iterations",size_hint_y=None,height=sp(30))))
         self.edit_layout.add_widget(self.iterations_buttons)
-        self.edit_layout.add_widget(Label())
+
+        syntax_label=ScrollableLabel()
+        syntax_label.text = syntax
+#        def f(*args,**kwargs): syntax_label.text_size = syntax_label.size
+#        syntax_label.bind(size = f)
+
+
+        self.edit_layout.add_widget(syntax_label)
         self.main_layout.add_widget(self.edit_layout)
         self.main_layout.add_widget(self.image)
 
@@ -91,7 +128,7 @@ class LSystemsEdit(Screen):
 
 
     def on_rule_choose(self,instance,*args):
-        if self.lsystem: 
+        if self.lsystem:
             name,(axiom,rules,angle) = self.lsystem
             new_axiom = instance.text if instance.text!="axiom" else axiom
             self.image.set_lsystem((new_axiom,rules,angle))
@@ -104,7 +141,6 @@ class LSystemsEdit(Screen):
         self.set_rule_chooser()
 
     def load_lsystem(self,lsystem):
-        print lsystem
         name,(axiom,rules,angle) = lsystem
         self.name_input.text = name
         self.axiom.text = axiom
@@ -116,13 +152,10 @@ class LSystemsEdit(Screen):
         axiom = self.axiom.text.replace(" ","")
         angle=''
         try: angle = float(self.angle.text)
-        except: pass
+        except: angle = 0
         try: rules = dict([x.split("=") for x in self.rules.text.replace(" ","").split("\n") if x])
-        except: pass
-        if name and axiom and rules and angle:
-            self.lsystem = name,(axiom,rules,angle)
-        else:
-            self.lsystem = None
+        except: rules = {}
+        self.lsystem = name,(axiom,rules,angle)
             
         
 
