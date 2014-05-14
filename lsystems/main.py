@@ -175,7 +175,8 @@ class LSystemsView(Screen):
 
     def minus(self,*args):
         self.image.set_iterations(self.image.get_iterations()-1)
-        self.iterations.text = str(self.image.get_iterations())
+        if self.iterations.text!="0":
+            self.iterations.text = str(self.image.get_iterations())
 
 
 

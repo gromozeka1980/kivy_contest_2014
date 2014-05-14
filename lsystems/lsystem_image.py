@@ -30,6 +30,7 @@ class LSystemImage(Im):
         #self.set_iterations(1)
 
     def set_iterations(self,iterations):
+        if iterations<0: iterations = 0
         self.iterations=iterations
         self.reset()
 
