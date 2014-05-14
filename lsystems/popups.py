@@ -19,7 +19,7 @@ file_chooser_gui = """
         size_hint_y: None
         height: sp(30)
         on_release:root.load(filechooser.selection)
-"""%l_file_path("")
+"""%l_file_path("").replace("\\","/") #for windows
 
 
 class LFileChooser(BoxLayout):
