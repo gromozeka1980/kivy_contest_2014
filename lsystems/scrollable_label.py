@@ -1,4 +1,4 @@
-#from https://github.com/kivy/kivy/wiki/Scrollable-Label, thanks to Alexander Taylor!
+#from https://github.com/kivy/kivy/wiki/Scrollable-Label, thanks to Alexander Taylor
 
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
