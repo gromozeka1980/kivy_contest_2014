@@ -1,0 +1,16 @@
+I started two projects, but did not have time to finish and polish either one of them. 
+Anyway, I have two working (and maybe even interesting to someone) pieces of software, so I put them here. :)
+
+Caterpillar logic
+"Caterpillar logic" is a small, challenging, and (I hope) interesting game of inductive reasoning. Rules inside!  :)
+
+L-Systems studio
+I wanted to make the tutorial about L-Systems something like http://www.nahee.com/spanky/www/fractint/lsys/tutor.html, but interactive;
+I did not reach my goal, but I think that the product in its current state may be very interesting for those who like fractal graphics.  Take a look!
+
+Features available in current version of product:
+1) Autoscaling - scaling fractal to fit the containing widget
+2) Animation - user does not wait to the end of fractal calculation process, he can watch it animated 
+3) Full compatibility with *.l format -  files that Fractint and XFractint use. (I included some interesting *.l files, as far as I understand, they are free to use, got them from - )
+4) Editor - User can edit the fractal and watch changes in real time. She can visualize entire fractal or individual rule.
+ 
