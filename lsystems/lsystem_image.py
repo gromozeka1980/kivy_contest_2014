@@ -49,7 +49,7 @@ class LSystemImage(Im):
         self.ls.reset()
         self.chunks = self.ls.draw(self.iterations,1000)
         self.all_lines = []
-        self.reload_image(None)
+        self.update()
 
     def update(self,*args,**kwargs):
         try:
@@ -58,7 +58,7 @@ class LSystemImage(Im):
             lines = []
         if lines:
             self.all_lines+=lines
-            self.reload_image(None)
+        self.reload_image(None)
         self.dispatch('on_update',len(self.all_lines))
 
     def reload_image(self,instance,*args):

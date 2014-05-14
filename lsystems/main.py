@@ -14,6 +14,7 @@ from kivy.uix.colorpicker import ColorPicker
 from kivy.uix.togglebutton import ToggleButton
 from popups import LFileChooser,BackgroundColorPicker
 ANDROID=True
+from os.path import basename
 try: import android
 except: ANDROID=False
 from pathes import *
@@ -26,9 +27,11 @@ class LSystemsView(Screen):
         #TODO KV!!!!!!
         self.register_event_type('on_edit')
         super(LSystemsView, self).__init__(**kwargs)
+        remove_temp_files()
         self.name = "view"
         self.main_layout=BoxLayout(orientation='vertical')
-        self.buttons_layout = BoxLayout(orientation='horizontal',size_hint= (1, .1))
+        self.buttons_layout = BoxLayout(orientation='horizontal',size_hint= (1, .05))
+        self.labels_layout = BoxLayout(orientation='horizontal',size_hint= (1, .05))       
         self.image = LSystemImage()
         self.image.bind(on_update=self.image_update)
 
@@ -42,7 +45,6 @@ class LSystemsView(Screen):
             if i == 1: btn.state = 'down'
             btn.bind(on_press = lambda btn: self.width_choice.select(btn.text))
             self.width_choice.add_widget(btn)
-
         self.fractal_choice = DropDown()
         self.fractal_choice.bind(on_select=self.choose_fractal)
         self.file_choice_button=Button(text = "Choose file")        
@@ -51,6 +53,7 @@ class LSystemsView(Screen):
         self.choice_button.bind(on_release = self.fractal_choice.open)
         self.next_button = Button(text="Next")
         self.ls_name = Label(text = "")
+        self.cur_file = Label(text = "")
         self.plus_button = Button(text="+")
         self.minus_button = Button(text="-")
         self.background_button = Button(text="Choose background")
@@ -61,18 +64,26 @@ class LSystemsView(Screen):
         self.edit_button = Button(text="Edit")
         self.edit_button.bind(on_press=self.edit)
         self.segments = Label(text="")
+        self.iterations=Label()
         self.buttons_layout.add_widget(self.file_choice_button)
         self.buttons_layout.add_widget(self.choice_button)
-        self.buttons_layout.add_widget(self.ls_name)
         self.buttons_layout.add_widget(self.next_button)
         self.buttons_layout.add_widget(self.plus_button)
         self.buttons_layout.add_widget(self.minus_button)
-        self.buttons_layout.add_widget(self.segments)
         self.buttons_layout.add_widget(self.edit_button)
         self.buttons_layout.add_widget(self.background_button)
         self.buttons_layout.add_widget(self.width_choice_button)
+        self.labels_layout.add_widget(Label(text="[b]File name:[/b]",markup=True))
+        self.labels_layout.add_widget(self.cur_file)
+        self.labels_layout.add_widget(Label(text="[b]L-system name:[/b]",markup=True))
+        self.labels_layout.add_widget(self.ls_name)
+        self.labels_layout.add_widget(Label(text="[b]Number of iterations:[/b]",markup=True))
+        self.labels_layout.add_widget(self.iterations)
+        self.labels_layout.add_widget(Label(text="[b]Number of segments:[/b]",markup=True))
+        self.labels_layout.add_widget(self.segments)
         self.main_layout.add_widget(self.image)
         self.main_layout.add_widget(self.buttons_layout)
+        self.main_layout.add_widget(self.labels_layout)
 
         self.file_chooser = LFileChooser()
         self.file_chooser.bind(on_choose=self.choose_file)
@@ -127,6 +138,7 @@ class LSystemsView(Screen):
             self.fractal_choice.add_widget(btn)
        
     def choose_file(self,instance,text):
+        self.cur_file.text = basename(text)
         self.popup.dismiss()
         self.fractals=l_parser(open(l_file_path(text)))
         self.set_fractals()
@@ -139,14 +151,16 @@ class LSystemsView(Screen):
     def choose_fractal(self,instance,text):
         self.ls_name.text = text
         self.image.set_lsystem(self.fractals[text][0])
-        print self.fractals[text][1]
         self.image.set_iterations(1)
+        self.iterations.text = str(self.image.get_iterations())
+
 
     def image_update(self,instance,num):
         self.segments.text = str(num)
 
     def next(self,*args):
         cur_name = self.ls_name.text
+        if not cur_name: return
         lst = self.fractals.keys()
         i = lst.index(cur_name)
         i+=1
@@ -157,9 +171,11 @@ class LSystemsView(Screen):
         
     def plus(self,*args):
         self.image.set_iterations(self.image.get_iterations()+1)
+        self.iterations.text = str(self.image.get_iterations())
 
     def minus(self,*args):
         self.image.set_iterations(self.image.get_iterations()-1)
+        self.iterations.text = str(self.image.get_iterations())
 
 
 

@@ -32,7 +32,6 @@ def l_parser(lines):
             angle,axiom,rules = None,None,{}
             name = p[1]
         if p[0] == "end":
-            print angle,axiom,rules
             if angle and axiom and rules and name:
                 d[name]=(axiom,rules,angle),raw_text
         if p[0] == "angle":
