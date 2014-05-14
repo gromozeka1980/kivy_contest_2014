@@ -83,7 +83,7 @@ class LSystemsEdit(Screen):
         self.edit_layout.add_widget(self.axiom)
         self.edit_layout.add_widget(Label(text="Rules",size_hint_y=None,height=sp(30)))
         self.edit_layout.add_widget(self.rules)
-        self.edit_layout.add_widget((Label(text="Choose rule to display",size_hint_y=None,height=sp(30))))
+        self.edit_layout.add_widget((Label(text="Choose rule to visualise",size_hint_y=None,height=sp(30))))
         self.edit_layout.add_widget(self.rule_chooser)
         self.edit_layout.add_widget((Label(text="Change number of iterations",size_hint_y=None,height=sp(30))))
         self.edit_layout.add_widget(self.iterations_buttons)
