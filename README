@@ -11,6 +11,6 @@ I did not reach my goal, but I think that the product in its current state may b
 Features available in current version of product:
 1) Autoscaling - scaling fractal to fit the containing widget
 2) Animation - user does not wait to the end of fractal calculation process, he can watch it animated 
-3) Full compatibility with *.l format -  files that Fractint and XFractint use. (I included some interesting *.l files, as far as I understand, they are free to use, got them from - )
+3) Full compatibility with *.l format -  files that Fractint and XFractint use. (I included some interesting *.l files, as far as I understand, they are free to use, got them from - http://www.nahee.com/spanky/pub/fractals/lsystems/ )
 4) Editor - User can edit the fractal and watch changes in real time. She can visualize entire fractal or individual rule.
  
