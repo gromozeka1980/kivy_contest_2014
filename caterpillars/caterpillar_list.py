@@ -8,7 +8,7 @@ class CaterpillarList(ScrollView):
         super(CaterpillarList, self).__init__(**kwargs)
         self.caterpillars=[]
         self.bind(size=self.draw)
-        self.box=GridLayout(orientation="vertical",cols=1,size_hint_y=None,spacing=10)
+        self.box=GridLayout(orientation="vertical",cols=2,size_hint_y=None,spacing=10)
         self.box.bind(minimum_height=self.box.setter('height'))
         self.add_widget(self.box)
 
@@ -26,6 +26,9 @@ class CaterpillarList(ScrollView):
     def draw(self,*args):
         self.box.clear_widgets()
         x,y=self.size
+        if x>y: cols = 2
+        else: cols =1
+        self.box.cols=cols
         for guess in self.caterpillars:
-            self.box.add_widget(Caterpillar(chain=guess,size_hint_y=None,size=(x,x/7)))
+            self.box.add_widget(Caterpillar(chain=guess,size_hint_y=None,size=(x,x/7/cols)))
         self.scroll_y=1
