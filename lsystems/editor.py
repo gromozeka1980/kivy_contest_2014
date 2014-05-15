@@ -13,8 +13,6 @@ from kivy.uix.screenmanager import Screen
 from scrollable_label import ScrollableLabel
 
 syntax="""
-                    L-Systems language syntax
-
  $|%         : turn 180 degrees or the largest possible turn < 180 degrees
 
  $f% or $d%    : draw a line using the current direction/length
@@ -75,19 +73,19 @@ class LSystemsEdit(Screen):
 
         self.image = LSystemImage()
 
-        self.edit_layout.add_widget(Label(text="Name",size_hint_y=None,height=sp(30)))
+        self.edit_layout.add_widget(Label(text="[b]Name[/b]",markup=True,size_hint_y=None,height=sp(30)))
         self.edit_layout.add_widget(self.name_input)
-        self.edit_layout.add_widget(Label(text="Angle",size_hint_y=None,height=sp(30)))
+        self.edit_layout.add_widget(Label(text="[b]Angle[/b]",markup=True,size_hint_y=None,height=sp(30)))
         self.edit_layout.add_widget(self.angle)
-        self.edit_layout.add_widget(Label(text="Axiom",size_hint_y=None,height=sp(30)))
+        self.edit_layout.add_widget(Label(text="[b]Axiom[/b]",markup=True,size_hint_y=None,height=sp(30)))
         self.edit_layout.add_widget(self.axiom)
-        self.edit_layout.add_widget(Label(text="Rules",size_hint_y=None,height=sp(30)))
+        self.edit_layout.add_widget(Label(text="[b]Rules[/b]",markup=True,size_hint_y=None,height=sp(30)))
         self.edit_layout.add_widget(self.rules)
-        self.edit_layout.add_widget((Label(text="Choose rule to visualise",size_hint_y=None,height=sp(30))))
+        self.edit_layout.add_widget((Label(text="[b]Choose rule to visualise[/b]",markup=True,size_hint_y=None,height=sp(30))))
         self.edit_layout.add_widget(self.rule_chooser)
-        self.edit_layout.add_widget((Label(text="Change number of iterations",size_hint_y=None,height=sp(30))))
+        self.edit_layout.add_widget((Label(text="[b]Change number of iterations[/b]",markup=True,size_hint_y=None,height=sp(30))))
         self.edit_layout.add_widget(self.iterations_buttons)
-
+        self.edit_layout.add_widget((Label(text="[b]L-systems syntax[/b]",markup=True,size_hint_y=None,height=sp(30))))
         syntax_label=ScrollableLabel()
         syntax_label.text = syntax
 #        def f(*args,**kwargs): syntax_label.text_size = syntax_label.size
