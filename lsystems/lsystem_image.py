@@ -59,8 +59,8 @@ class LSystemImage(Im):
             lines = []
         if lines:
             self.all_lines+=lines
-        self.reload_image(None)
-        self.dispatch('on_update',len(self.all_lines))
+            self.reload_image(None)
+            self.dispatch('on_update',len(self.all_lines))
 
     def reload_image(self,instance,*args):
         file_name = temp_file_path("%s.png"%id(self))
