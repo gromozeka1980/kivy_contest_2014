@@ -1,11 +1,15 @@
 from lsystem import LSystem
 from lines_to_image import lines2image
 from kivy.uix.image import Image as Im
+from kivy.uix.widget import Widget
 from kivy.clock import Clock
 import os
 from pathes import *
+from StringIO import StringIO
+from kivy.core.image.img_pygame import ImageLoaderPygame
 
 CATALOG_ROOT = os.path.join(os.path.dirname(__file__),"Temp")
+
 
 class LSystemImage(Im):
 
@@ -18,7 +22,7 @@ class LSystemImage(Im):
         self.background_color = (0,0,0)
         self.line_width = 1
         self.all_lines = []
-        self.ls=LSystem()        
+        self.ls=LSystem()
         Clock.schedule_interval(self.update,1/10.0)
 
     def on_update(self,*args,**kwargs):
@@ -65,11 +69,12 @@ class LSystemImage(Im):
 
 
     def reload_image(self,instance,*args):
-        file_name = temp_file_path("%s.png"%id(self))
         im = lines2image(self.all_lines,
                          map(int,self.size),
                          line_width =self.line_width,
                          background_color=self.background_color)
-        im.save(file_name)
-        self.source = file_name
-        self.reload()
+        stio = StringIO()
+        im.save(stio,format="PNG")
+        stio.seek(0)
+        with self.canvas:
+            self.texture = ImageLoaderPygame(stio).texture

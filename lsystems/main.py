@@ -27,7 +27,6 @@ class LSystemsView(Screen):
         #TODO KV!!!!!!
         self.register_event_type('on_edit')
         super(LSystemsView, self).__init__(**kwargs)
-        remove_temp_files()
         self.name = "view"
         self.main_layout=BoxLayout(orientation='vertical')
         self.buttons_layout = BoxLayout(orientation='horizontal',size_hint= (1, .05))
