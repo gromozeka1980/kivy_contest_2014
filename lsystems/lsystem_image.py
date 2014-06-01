@@ -50,7 +50,7 @@ class LSystemImage(Im):
         self.ls.reset()
         self.chunks = self.ls.draw(self.iterations,1000)
         self.all_lines = []
-        self.update()
+        self.update(force = True)
 
     def update(self,*args,**kwargs):
         try:
@@ -61,6 +61,8 @@ class LSystemImage(Im):
             self.all_lines+=lines
             self.reload_image(None)
             self.dispatch('on_update',len(self.all_lines))
+        if kwargs.get('force',False): self.reload_image(None)
+
 
     def reload_image(self,instance,*args):
         file_name = temp_file_path("%s.png"%id(self))
