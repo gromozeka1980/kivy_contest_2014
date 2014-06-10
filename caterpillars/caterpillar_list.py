@@ -26,8 +26,8 @@ class CaterpillarList(ScrollView):
     def draw(self,*args):
         self.box.clear_widgets()
         x,y=self.size
-        if x>y: cols = 2
-        else: cols =1
+        cols = int(round(x/y))
+        if cols==0: cols = 1
         self.box.cols=cols
         for guess in self.caterpillars:
             self.box.add_widget(Caterpillar(chain=guess,size_hint_y=None,size=(x,x/7/cols)))

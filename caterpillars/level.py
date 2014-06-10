@@ -17,7 +17,7 @@ class Level(Screen):
         main_layout=BoxLayout(orientation='vertical')
         labels=BoxLayout(orientation="horizontal",size_hint=(1,.1))
         labels.add_widget(Label(text="Valid",background_color=(0,1,0,1)))
-        labels.add_widget(Label(text="Inalid",background_color=(1,0,0,1)))
+        labels.add_widget(Label(text="Invalid",background_color=(1,0,0,1)))
         history=BoxLayout(orientation="horizontal",spacing=100)
         self.enter_label=Label(text="Enter your sequence:",size_hint=(1,.2))
         self.valid_history=CaterpillarList()

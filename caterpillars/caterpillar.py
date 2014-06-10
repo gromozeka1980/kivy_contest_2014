@@ -62,8 +62,10 @@ class Caterpillar(Widget):
         self.canvas.clear()
         if self._chain==[]: return
         x,y=self.pos
-        a,b=self.size
+        a,b=self.size        
         num=7#len(self._chain)
+        if a<b*num: b = a/num
+        else: a=b*num
         for i,e in enumerate(self._chain):
             pos=(x+a/num*i,y)
             size=(a/num,b)

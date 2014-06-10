@@ -7,6 +7,7 @@ import os
 from pathes import *
 from StringIO import StringIO
 from kivy.core.image.img_pygame import ImageLoaderPygame
+from threading import Lock
 
 CATALOG_ROOT = os.path.join(os.path.dirname(__file__),"Temp")
 
@@ -16,6 +17,7 @@ class LSystemImage(Im):
     def __init__(self,**kwargs):
         super(LSystemImage,self).__init__(**kwargs)
         self.register_event_type('on_update')
+        self.lock1=Lock()
         self.bind(pos=self.reload_image)
         self.bind(size=self.reload_image)
         self.iterations = 1
@@ -57,15 +59,18 @@ class LSystemImage(Im):
         self.update(force = True)
 
     def update(self,*args,**kwargs):
-        try:
-            lines = self.chunks.next()
-        except:
-            lines = []
-        if lines:
-            self.all_lines+=lines
-            self.reload_image(None)
-            self.dispatch('on_update',len(self.all_lines))
-        if kwargs.get('force',False): self.reload_image(None)
+        if self.lock1.locked():
+            return
+        with self.lock1:
+            try:
+                lines = self.chunks.next()
+            except:
+                lines = []
+            if lines:
+                self.all_lines+=lines
+                self.reload_image(None)
+                self.dispatch('on_update',len(self.all_lines))
+            if kwargs.get('force',False): self.reload_image(None)
 
 
     def reload_image(self,instance,*args):
