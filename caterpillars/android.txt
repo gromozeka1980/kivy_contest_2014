@@ -1,0 +1,3 @@
+title=Caterpillars	
+author=Fuks Michael
+orientation=landscape
