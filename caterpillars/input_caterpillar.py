@@ -8,6 +8,7 @@ from caterpillar import Caterpillar
 class InputCaterpillar(BoxLayout):
 
     def __init__(self,**kwargs):
+        self.spacing=5
         self.register_event_type('on_input')
         super(InputCaterpillar, self).__init__(**kwargs)
         self.orientation="vertical"
@@ -17,7 +18,7 @@ class InputCaterpillar(BoxLayout):
         for (k,v) in sorted(Caterpillar._colors.items()):
             b=Button()
             b.num=k
-            b.background_color=list(v)+[1]
+            b.background_color=[c*3 for c in list(v)]+[1]
             b.bind(on_press=self.color_press)
             buttons.add_widget(b)
         b=Button(text="<=")

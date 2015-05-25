@@ -24,7 +24,7 @@ class Level(Screen):
         self.invalid_history=CaterpillarList()
         history.add_widget(self.valid_history)
         history.add_widget(self.invalid_history)
-        self.buttons=BoxLayout(orientation="vertical")
+        self.buttons=BoxLayout(orientation="vertical",spacing = 5)
         self.exam=Exam()
         self.exam.bind(on_answer=self.chain_entered)
         self.exam.bind(on_finish=self.finish)

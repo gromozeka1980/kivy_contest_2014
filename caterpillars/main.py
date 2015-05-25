@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+__version__="0.0.1"
 import random
 from time import sleep
 import kivy
@@ -27,7 +28,19 @@ CATALOG_ROOT = os.path.dirname(__file__)
 
           
 
-class CaterpillarsApp(App):            
+class CaterpillarsApp(App):
+
+
+    def on_pause(self):
+      # Here you can save data if needed
+        return True
+
+    def on_resume(self):
+      # Here you can check if any data needs replacing (usually nothing)
+        pass
+
+    def open_settings(*args):
+        pass            
 
     def build(self):
         self.progress=self.load_progress()
@@ -53,7 +66,10 @@ class CaterpillarsApp(App):
 
     def key_handler(self,keyboard,keycode, *args, **kwargs):
         if keycode==(1001 if ANDROID else 32):
-            self.root.current="grid"
+            if self.root.current == "grid":
+                App().stop()
+            else:    
+                self.root.current="grid"
 
     
     def level_choice(self,instance,level_id,rule):

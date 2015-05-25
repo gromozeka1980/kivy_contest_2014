@@ -11,12 +11,9 @@ Two most known games based on inductive reasoning are Zendo and Eleusis.
 
 At each level of this game you are to guess the rule that describes a subset of sequences of multicolored segments (caterpillars).
 At the beginning of the game you get 14 caterpillars: 7 of them correspond to the rule, and 7 do not.
-Additionally, you can create a custom caterpillar and check whether it corresponds to the rule.
+Additionally, you can create a custom caterpillar and check whether it corresponds to the rule (HINT: pay attention at caterpillar's eyes :) ).
 At the moment you feel that you've caught on to the pattern, you can take a test to check your guess.
 Any suggestions that may improve game-play or design--or that may include new and interesting rules-- are welcome!
-
-
-(press space to return to main screen)
 """
 
 class Help(Screen):
